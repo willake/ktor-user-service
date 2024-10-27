@@ -1,5 +1,7 @@
 package com.huiun.di
 
+import com.huiun.repository.UserRepository
+import com.huiun.repository.UserRepositoryImpl
 import io.github.cdimascio.dotenv.dotenv
 import org.jetbrains.exposed.sql.Database
 import org.koin.dsl.module
@@ -20,4 +22,5 @@ val appModule = module {
             password = dotenv["DB_PASSWORD"]
         )
     }
+    single<UserRepository> { UserRepositoryImpl(get()) }
 }
