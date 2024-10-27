@@ -5,6 +5,8 @@ import com.huiun.controller.request.UserCreationRequest
 import com.huiun.controller.request.UserSetPasswordRequest
 import com.huiun.controller.request.UserUpdateRequest
 import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -12,7 +14,7 @@ import org.koin.ktor.ext.inject
 
 fun Route.userRoutes() {
 
-    val userController by inject<UserController>()
+    val userController by application.inject<UserController>()
 
     post("api/v1/user") {
         val request = call.receive<UserCreationRequest>()
@@ -28,58 +30,78 @@ fun Route.userRoutes() {
         }
     }
 
-    get("api/v1/user/{id}") {
-        try {
-            val id = call.parameters["id"]?.toString() ?: throw IllegalArgumentException("Invalid ID")
+    authenticate {
+        get("api/v1/user/{id}") {
+            try {
+                val id = call.parameters["id"] ?: throw IllegalArgumentException("Invalid ID")
+                val principal = call.principal<JWTPrincipal>()
 
-            val response = userController.findUserById(id)
-            call.respond(HttpStatusCode.OK, response)
+                if(principal != null && principal.subject != id) {
+                    call.respond(HttpStatusCode.Forbidden)
+                }
+
+                val response = userController.findUserById(id)
+                call.respond(HttpStatusCode.OK, response)
+
+            } catch (e: Exception) {
+                call.application.environment.log.error("Unexpected error occur", e)
+                call.respond(HttpStatusCode.InternalServerError)
+            }
         }
-        catch (e: Exception) {
-            call.application.environment.log.error("Unexpected error occur", e)
-            call.respond(HttpStatusCode.InternalServerError)
+
+        put("api/v1/user/{id}/password") {
+            try {
+                val id = call.parameters["id"] ?: throw IllegalArgumentException("Invalid ID")
+                val principal = call.principal<JWTPrincipal>()
+
+                if(principal != null && principal.subject != id) {
+                    call.respond(HttpStatusCode.Forbidden)
+                }
+
+                val request = call.receive<UserSetPasswordRequest>()
+                val response = userController.setPassword(id, request)
+
+                call.respond(HttpStatusCode.OK, response)
+            } catch (e: Exception) {
+                call.application.environment.log.error("Unexpected error occur", e)
+                call.respond(HttpStatusCode.InternalServerError)
+            }
         }
-    }
 
-    put("api/v1/user/{id}/password") {
-        try {
-            val id = call.parameters["id"]?.toString() ?: throw IllegalArgumentException("Invalid ID")
+        put("api/v1/user") {
+            val request = call.receive<UserUpdateRequest>()
+            val principal = call.principal<JWTPrincipal>()
 
-            val request = call.receive<UserSetPasswordRequest>()
-            val response = userController.setPassword(id, request)
+            if(principal != null && principal.subject != request.id) {
+                call.respond(HttpStatusCode.Forbidden)
+            }
 
-            call.respond(HttpStatusCode.OK, response)
+            try {
+                val response = userController.updateUserInfo(request)
+
+                call.respond(HttpStatusCode.OK, response)
+            } catch (e: Exception) {
+                call.application.environment.log.error("Unexpected error occur", e)
+                call.respond(HttpStatusCode.InternalServerError)
+            }
         }
-        catch (e: Exception) {
-            call.application.environment.log.error("Unexpected error occur", e)
-            call.respond(HttpStatusCode.InternalServerError)
-        }
-    }
 
-    put("api/v1/user") {
-        val request = call.receive<UserUpdateRequest>()
+        delete("api/v1/user/{id}") {
+            val id = call.parameters["id"] ?: throw IllegalArgumentException("Invalid ID")
+            val principal = call.principal<JWTPrincipal>()
 
-        try {
-            val response = userController.updateUserInfo(request)
+            if(principal != null && principal.subject != id) {
+                call.respond(HttpStatusCode.Forbidden)
+            }
 
-            call.respond(HttpStatusCode.OK, response)
-        }
-        catch (e: Exception) {
-            call.application.environment.log.error("Unexpected error occur", e)
-            call.respond(HttpStatusCode.InternalServerError)
-        }
-    }
+            try {
+                userController.deleteUser(id)
 
-    delete("api/v1/user/{id}") {
-        val id = call.parameters["id"]?.toString() ?: throw IllegalArgumentException("Invalid ID")
-
-        try {
-            userController.deleteUser(id)
+                call.respond(HttpStatusCode.OK)
+            } catch (e: Exception) {
+                call.application.environment.log.error("Unexpected error occur", e)
+                call.respond(HttpStatusCode.InternalServerError)
+            }
         }
-        catch (e: Exception) {
-            call.application.environment.log.error("Unexpected error occur", e)
-            call.respond(HttpStatusCode.InternalServerError)
-        }
-        TODO("Handle deleting a user")
     }
 }
