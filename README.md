@@ -1,6 +1,86 @@
 # Ktor User Service
 This project is a user service developed with Ktor
 
+## APIs
+### Create user
+`POST /api/v1/user`
+#### Request
+```
+{
+  "username": string,
+  "email": string,
+  "password": string
+}
+```
+#### Response
+```
+{
+  "id": string,
+  "username": string,
+  "email": string
+}
+```
+### Get user
+`GET /api/v1/user/{id}` get user
+#### Response
+```
+{
+  "id": string,
+  "username": string,
+  "email": string
+}
+```
+### Update user info except username and password
+`PUT /api/v1/user`
+#### Request
+```
+{
+  "id": string,
+  "email": string
+}
+```
+#### Response
+```
+{
+  "id": string,
+  "username": string,
+  "email": string
+}
+```
+Update user password
+`PUT /api/v1/user/{id}/password`
+#### Request
+```
+{
+  "oldPassword": string,
+  "newPassword": string
+}
+```
+### Delete user
+`DELETE /api/v1/user/{id}`
+
+### Login
+`POST /api/v1/auth/login`
+#### Request
+```
+{
+  "username": string,
+  "password": string
+}
+```
+#### Response
+```
+{
+  "userId": string,
+  "accessToken": string
+}
+```
+## TODO
+- [ ] Error Handling (Exceptions)
+- [ ] Integration tests
+- [ ] Unit tests
+- [ ] CI/CD
+
 ## Version Control
 This project follows [GitFlow](http://datasift.github.io/gitflow/IntroducingGitFlow.html) version control rules, but not that strict.
 
