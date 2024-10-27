@@ -4,6 +4,8 @@ import com.huiun.controller.UserController
 import com.huiun.controller.UserControllerImpl
 import com.huiun.repository.UserRepository
 import com.huiun.repository.UserRepositoryImpl
+import com.huiun.service.AuthService
+import com.huiun.service.AuthServiceImpl
 import com.huiun.service.UserService
 import com.huiun.service.UserServiceImpl
 import com.huiun.util.JWTTokenProvider
@@ -28,13 +30,14 @@ val appModule = module {
         )
     }
     single { JWTTokenProvider(
-        dotenv()["JWT_SECRET_KEY"],
-        dotenv()["JWT_EXPIRATION"].toLong(),
-        dotenv()["JWT_ISSUER"],
-        dotenv()["JWT_AUDIENCE"],
-        dotenv()["JWT_REALM"]
+        secretKey =  dotenv()["JWT_SECRET_KEY"],
+        expiration =  dotenv()["JWT_EXPIRATION"].toLong(),
+        issuer =  dotenv()["JWT_ISSUER"],
+        audience =  dotenv()["JWT_AUDIENCE"],
+        myRealm =  dotenv()["JWT_REALM"]
     ) }
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<UserService> { UserServiceImpl(get())}
     single<UserController> { UserControllerImpl(get()) }
+    single<AuthService> { AuthServiceImpl(get(), get())}
 }
