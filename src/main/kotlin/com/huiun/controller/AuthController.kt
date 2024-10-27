@@ -12,6 +12,12 @@ class AuthControllerImpl(
     private val authService: AuthService
 ) : AuthController {
     override suspend fun login(userLoginRequest: UserLoginRequest): UserLoginResponse {
-        TODO("Not yet implemented")
+
+        val token = authService.authenticateUser(
+            userLoginRequest.username,
+            userLoginRequest.password
+        )
+
+        return UserLoginResponse(token)
     }
 }
