@@ -13,11 +13,11 @@ class AuthControllerImpl(
 ) : AuthController {
     override suspend fun login(userLoginRequest: UserLoginRequest): UserLoginResponse {
 
-        val token = authService.authenticateUser(
+        val result = authService.authenticateUser(
             userLoginRequest.username,
             userLoginRequest.password
         )
 
-        return UserLoginResponse(token)
+        return UserLoginResponse(result.first, result.second)
     }
 }
