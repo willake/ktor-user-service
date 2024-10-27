@@ -38,6 +38,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-config-yaml")
+    implementation("org.mindrot:jbcrypt:0.4")
 
     // Jetbrains exposed
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
