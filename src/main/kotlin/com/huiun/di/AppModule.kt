@@ -1,5 +1,7 @@
 package com.huiun.di
 
+import com.huiun.controller.AuthController
+import com.huiun.controller.AuthControllerImpl
 import com.huiun.controller.UserController
 import com.huiun.controller.UserControllerImpl
 import com.huiun.repository.UserRepository
@@ -40,4 +42,5 @@ val appModule = module {
     single<UserService> { UserServiceImpl(get())}
     single<UserController> { UserControllerImpl(get()) }
     single<AuthService> { AuthServiceImpl(get(), get())}
+    single<AuthController> { AuthControllerImpl(get())}
 }
