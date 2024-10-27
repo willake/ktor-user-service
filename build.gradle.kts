@@ -27,6 +27,11 @@ repositories {
     mavenCentral()
 }
 
+// https://discuss.kotlinlang.org/t/cant-run-unit-tests/21841/3
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
