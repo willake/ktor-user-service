@@ -13,7 +13,7 @@ interface UserService {
     suspend fun deleteUser(id: UUID)
 }
 
-abstract class UserServiceImpl(
+class UserServiceImpl(
     private val userRepository: UserRepository
 ) : UserService {
     override suspend fun createUser(email: String, username: String, password: String): User {
