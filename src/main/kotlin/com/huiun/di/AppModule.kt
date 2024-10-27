@@ -1,5 +1,7 @@
 package com.huiun.di
 
+import com.huiun.controller.UserController
+import com.huiun.controller.UserControllerImpl
 import com.huiun.repository.UserRepository
 import com.huiun.repository.UserRepositoryImpl
 import com.huiun.service.UserService
@@ -26,4 +28,5 @@ val appModule = module {
     }
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<UserService> { UserServiceImpl(get())}
+    single<UserController> { UserControllerImpl(get()) }
 }
