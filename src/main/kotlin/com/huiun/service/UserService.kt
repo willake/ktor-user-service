@@ -7,7 +7,7 @@ import java.util.UUID
 interface UserService {
     suspend fun createUser(user: User): User
     suspend fun findUserById(id: UUID): User?
-    suspend fun updateUser(user:User): User
+    suspend fun updateUserInfo(user:User): User
     suspend fun setNewPassword(id: UUID, oldPassword: String, newPassword: String)
     suspend fun deleteUser(id: UUID)
 }
@@ -23,7 +23,7 @@ abstract class UserServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateUser(user: User): User {
+    override suspend fun updateUserInfo(user: User): User {
         TODO("Not yet implemented")
     }
 
