@@ -2,6 +2,8 @@ package com.huiun.di
 
 import com.huiun.repository.UserRepository
 import com.huiun.repository.UserRepositoryImpl
+import com.huiun.service.UserService
+import com.huiun.service.UserServiceImpl
 import io.github.cdimascio.dotenv.dotenv
 import org.jetbrains.exposed.sql.Database
 import org.koin.dsl.module
@@ -23,4 +25,5 @@ val appModule = module {
         )
     }
     single<UserRepository> { UserRepositoryImpl(get()) }
+    single<UserService> { UserServiceImpl(get())}
 }
