@@ -12,7 +12,7 @@ import org.koin.ktor.ext.inject
 
 fun Route.userRoutes() {
 
-    val userController by inject<UserController>()
+    val userController by application.inject<UserController>()
 
     post("api/v1/user") {
         val request = call.receive<UserCreationRequest>()
