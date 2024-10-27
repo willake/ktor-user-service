@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface UserService {
     suspend fun createUser(email: String, username: String, password: String): User
-    suspend fun findUserById(id: UUID): User?
+    suspend fun findUserById(id: UUID): User
     suspend fun updateUserInfo(id: UUID, email: String): User
     suspend fun setNewPassword(id: UUID, oldPassword: String, newPassword: String)
     suspend fun deleteUser(id: UUID)
@@ -31,8 +31,10 @@ class UserServiceImpl(
         ))
     }
 
-    override suspend fun findUserById(id: UUID): User? {
-        return userRepository.findById(id)
+    override suspend fun findUserById(id: UUID): User {
+        val user = userRepository.findById(id)?: throw Exception("User not found")
+
+        return user
     }
 
     override suspend fun updateUserInfo(id: UUID, email: String): User {
