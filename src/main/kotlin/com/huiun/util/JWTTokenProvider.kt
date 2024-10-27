@@ -25,7 +25,7 @@ class JWTTokenProvider(
         return JWT.create()
             .withAudience(audience)
             .withIssuer(issuer)
-            .withClaim("username", user.username)
+            .withSubject(user.id.toString())
             .withExpiresAt(Date(System.currentTimeMillis() + expiration))
             .sign(Algorithm.HMAC256(secretKey))
     }

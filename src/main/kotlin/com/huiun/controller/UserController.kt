@@ -37,7 +37,7 @@ class UserControllerImpl(
 
     override suspend fun updateUserInfo(userUpdateRequest: UserUpdateRequest): UserResponse {
         val user = userService.updateUserInfo(
-            userUpdateRequest.id,
+            UUID.fromString(userUpdateRequest.id),
             userUpdateRequest.email)
 
         return UserResponse(user.id, user.email, user.username)

@@ -6,7 +6,6 @@ import java.util.UUID
 
 @Serializable
 data class UserUpdateRequest(
-    @Serializable(with = UUIDSerializer::class)
-    val id: UUID,
+    val id: String,
     val email: String
 )
