@@ -1,6 +1,33 @@
 # Ktor User Service
 This project is a user service developed with Ktor
 
+## How to run
+Open project using Kotlin IDEs such as Jetbrains IntelliJ 
+
+Create a `.env` file with following data:
+```
+DB_URL=
+DB_DRIVER=
+DB_USERNAME=
+DB_PASSWORD=
+JWT_SECRET_KEY=
+JWT_EXPIRATION=
+JWT_ISSUER=
+JWT_AUDIENCE=
+JWT_REALM=
+```
+An example environment variable data has been provided in `.env.example`
+
+After `.env` is set, run the project with `Application.kt` or with cli
+```
+./gradlew run
+```
+
+For running test, select test file and run in IDE or run with the following command
+```
+./gradlew test
+```
+
 ## APIs
 ### Create user
 `POST /api/v1/user`
