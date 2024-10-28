@@ -2,7 +2,12 @@
 This project is a user service developed with Ktor
 
 ## How to run
-Open project using Kotlin IDEs such as Jetbrains IntelliJ 
+Firstly, create a database with database applications such as [PosgreSQL](https://www.postgresql.org/).
+You can also use a [h2 database](https://www.h2database.com/html/main.html).
+
+To use the other database applications like `MySQL` or `MSSQL`, you will need to add the driver dependency in `build.gradle.kts`.
+
+Next, open project using Kotlin IDEs such as Jetbrains IntelliJ 
 
 Create a `.env` file with following data:
 ```
@@ -17,6 +22,15 @@ JWT_AUDIENCE=
 JWT_REALM=
 ```
 An example environment variable data has been provided in `.env.example`
+
+If you would like to use h2 memory database, which will not require you to create a database manually. You can input the 
+DB-related variables as following example:
+```
+DB_URL=jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+DB_DRIVER=org.h2.Driver
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
 After `.env` is set, run the project with `Application.kt` or with cli
 ```
