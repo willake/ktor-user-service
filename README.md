@@ -28,6 +28,8 @@ For running test, select test file and run in IDE or run with the following comm
 ./gradlew test
 ```
 
+By default, server is run on localhost:8080. The port can be adjusted in `application.yaml`
+
 ## APIs
 ### Create user
 `POST /api/v1/user`
